@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { BsPlusCircle } from "react-icons/bs";
 import { Card, ModalWindow } from "./components";
-import { tasks } from "./utils/mock";
+import { cards } from "./utils/mock";
 
 function App() {
   const [modalIsOpen, setIsOpen] = useState(false);
+  const [tasks, setTasks] = useState(cards);
 
   function openModal() {
     setIsOpen(true);
@@ -54,7 +55,11 @@ function App() {
           </ColumnHeader>
         </Column>
       </Main>
-      <ModalWindow modalIsOpen={modalIsOpen} closeModal={closeModal} />
+      <ModalWindow
+        modalIsOpen={modalIsOpen}
+        closeModal={closeModal}
+        setTasks={setTasks}
+      />
     </Wrapper>
   );
 }

@@ -1,16 +1,18 @@
 import React, { FC, useState } from "react";
 import styled from "styled-components";
 import Modal from "react-modal";
-import { buttons, Tasks, tasks } from "../../utils/mock";
+import { buttons, Cards, cards } from "../../utils/mock";
 
 interface ModalWindowProps {
   closeModal: () => void;
   modalIsOpen: boolean;
+  setTasks: (card: Cards[]) => void;
 }
 
 export const ModalWindow: FC<ModalWindowProps> = ({
   closeModal,
   modalIsOpen,
+  setTasks,
 }) => {
   const customStyles = {
     content: {
@@ -25,7 +27,7 @@ export const ModalWindow: FC<ModalWindowProps> = ({
 
   const [titleValue, setTitleValue] = useState("");
   const [descriptionValue, setDescriptionValue] = useState("");
-  const [task, setTask] = useState(tasks);
+  const [onPriorityAdd, setOnPriorityAdd] = useState(cards);
 
   function onPriorityClick(priorityText: string) {
     let card = {
@@ -34,7 +36,9 @@ export const ModalWindow: FC<ModalWindowProps> = ({
       description: descriptionValue,
     };
 
-    setTask([...task, card]);
+    closeModal();
+    setOnPriorityAdd([...onPriorityAdd, card]);
+    setTasks([...onPriorityAdd, card]);
   }
 
   Modal.setAppElement("#root");
@@ -76,7 +80,7 @@ export const ModalWindow: FC<ModalWindowProps> = ({
   );
 };
 
-const ModalForm = styled.form`
+const ModalForm = styled.div`
   display: flex;
   flex-direction: column;
 `;
@@ -114,7 +118,7 @@ const ModalPriority = styled.div`
 `;
 
 const PriorityBtn = styled.button<{
-  $variant?: () => string;
+  $variant: () => string;
 }>`
   border-radius: 10px;
   border: none;

@@ -1,10 +1,10 @@
-export type Tasks = {
+export type Cards = {
   title: string;
   description: string;
   priority: string;
 };
 
-export const tasks: Tasks[] = [
+export const cards: Cards[] = [
   {
     title: "помыть посуду",
     priority: "high",
