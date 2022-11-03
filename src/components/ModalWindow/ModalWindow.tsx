@@ -125,6 +125,7 @@ const PriorityBtn = styled.button<{
   cursor: pointer;
   font-size: 14px;
   padding: 2px 5px;
+  color: white;
   ${({ $variant }) => $variant}
 `;
 

@@ -7,6 +7,8 @@ import { cards } from "./utils/mock";
 function App() {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [tasks, setTasks] = useState(cards);
+  const [columnNameChange, setColumnNameChange] = useState(false);
+  const [columnName, setColumnName] = useState("");
 
   function openModal() {
     setIsOpen(true);
@@ -14,6 +16,16 @@ function App() {
 
   function closeModal() {
     setIsOpen(false);
+  }
+
+  function onColumnName() {
+    setColumnNameChange(true);
+  }
+
+  function onEnterName(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.code === "Enter") {
+      setColumnNameChange(false);
+    }
   }
 
   return (
@@ -28,7 +40,17 @@ function App() {
       <Main>
         <Column>
           <ColumnHeader>
-            <ColumnName>To do</ColumnName>
+            {columnNameChange ? (
+              <ColumnNameInput
+                value={columnName}
+                onKeyDown={onEnterName}
+                onChange={(e) => setColumnName(e.target.value)}
+                onBlur={() => setColumnNameChange(false)}
+                autoFocus
+              />
+            ) : (
+              <ColumnName onClick={onColumnName}>{columnName}</ColumnName>
+            )}
             <Plus onClick={openModal} />
           </ColumnHeader>
           <Tasks>
@@ -136,7 +158,11 @@ const ColumnHeader = styled.div`
   padding: 15px 15px;
 `;
 
-const ColumnName = styled.h3``;
+const ColumnName = styled.h3`
+  cursor: pointer;
+`;
+
+const ColumnNameInput = styled.input``;
 
 const Plus = styled(BsPlusCircle)`
   background-color: #67cb65;

@@ -12,7 +12,7 @@ export const Card: FC<CardProps> = ({ title, priority, description }) => {
     <Root>
       <TaskHeader>
         <TaskTitle>{title}</TaskTitle>
-        <Priority>{priority}</Priority>
+        <Priority $variant={themes[`${priority}`]}>{priority}</Priority>
       </TaskHeader>
       <TaskDescription>{description}</TaskDescription>
     </Root>
@@ -38,12 +38,26 @@ const TaskTitle = styled.h3`
   font-size: 15px;
 `;
 
-const Priority = styled.p`
+const Priority = styled.p<{
+  $variant: () => string;
+}>`
   font-size: 11px;
   padding: 1px 5px;
-  background-color: #e74444;
   border-radius: 10px;
   color: white;
+  ${({ $variant }) => $variant}
 `;
+
+const themes: { [key: string]: () => string } = {
+  high: () => `
+  background-color: #e74444;  
+  `,
+  medium: () => `
+  background-color: #ff9533;
+  `,
+  low: () => `
+  background-color: #67cb65;
+  `,
+};
 
 const TaskDescription = styled.p``;
