@@ -1,14 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { BsPlusCircle } from "react-icons/bs";
+import { Card, ModalWindow } from "./components";
+import { tasks } from "./utils/mock";
 
 function App() {
+  const [modalIsOpen, setIsOpen] = useState(false);
+
+  function openModal() {
+    setIsOpen(true);
+  }
+
+  function closeModal() {
+    setIsOpen(false);
+  }
+
   return (
     <Wrapper>
       <Header>
         <SearchInput placeholder="Search" />
         <PersonalBar>
-          <Name> Илья Бабиков</Name>
+          <Name>Ilya Babikov</Name>
         </PersonalBar>
       </Header>
 
@@ -16,36 +28,17 @@ function App() {
         <Column>
           <ColumnHeader>
             <ColumnName>To do</ColumnName>
-            <Plus />
+            <Plus onClick={openModal} />
           </ColumnHeader>
           <Tasks>
-            <Task>
-              <TaskHeader>
-                <TaskTitle>Помыть посуду</TaskTitle>
-                <Priority>High</Priority>
-              </TaskHeader>
-              <TaskDescription>
-                Маме мне оторвет голову, если не помою посуду
-              </TaskDescription>
-            </Task>
-            <Task>
-              <TaskHeader>
-                <TaskTitle>Помыть посуду</TaskTitle>
-                <Priority>High</Priority>
-              </TaskHeader>
-              <TaskDescription>
-                Маме мне оторвет голову, если не помою посуду
-              </TaskDescription>
-            </Task>
-            <Task>
-              <TaskHeader>
-                <TaskTitle>Помыть посуду</TaskTitle>
-                <Priority>High</Priority>
-              </TaskHeader>
-              <TaskDescription>
-                Маме мне оторвет голову, если не помою посуду
-              </TaskDescription>
-            </Task>
+            {tasks.map((item, index) => (
+              <Card
+                key={index}
+                title={item.title}
+                priority={item.priority}
+                description={item.description}
+              />
+            ))}
           </Tasks>
         </Column>
         <Column>
@@ -61,6 +54,7 @@ function App() {
           </ColumnHeader>
         </Column>
       </Main>
+      <ModalWindow modalIsOpen={modalIsOpen} closeModal={closeModal} />
     </Wrapper>
   );
 }
@@ -150,34 +144,5 @@ const Plus = styled(BsPlusCircle)`
 const Tasks = styled.div`
   padding: 15px 15px;
 `;
-
-const Task = styled.div`
-  background-color: #e0e4ea;
-  padding: 20px 20px;
-  border-radius: 12px;
-  margin-bottom: 15px;
-`;
-
-const TaskHeader = styled.div`
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-`;
-
-const TaskTitle = styled.h3`
-  margin-right: 10px;
-  font-weight: 500;
-  font-size: 15px;
-`;
-
-const Priority = styled.p`
-  font-size: 11px;
-  padding: 1px 5px;
-  background-color: #e74444;
-  border-radius: 10px;
-  color: white;
-`;
-
-const TaskDescription = styled.p``;
 
 export default App;
