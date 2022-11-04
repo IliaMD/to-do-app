@@ -5,6 +5,10 @@ export type Cards = {
   id: string;
 };
 
+export type Columns = {
+  name: string;
+};
+
 export const cards: Cards[] = [
   {
     title: "помыть посуду",
@@ -18,4 +22,10 @@ export const buttons = [
   { text: "high", themes: "high" },
   { text: "medium", themes: "medium" },
   { text: "low", themes: "low" },
+];
+
+export const columns: Columns[] = [
+  { name: "To do" },
+  { name: "Completed" },
+  { name: "Frozen" },
 ];
