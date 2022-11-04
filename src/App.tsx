@@ -3,12 +3,14 @@ import styled from "styled-components";
 import { BsPlusCircle } from "react-icons/bs";
 import { Card, ModalWindow } from "./components";
 import { cards } from "./utils/mock";
+import { v4 as uuidv4 } from "uuid";
 
 function App() {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [tasks, setTasks] = useState(cards);
   const [columnNameChange, setColumnNameChange] = useState(false);
-  const [columnName, setColumnName] = useState("");
+  const [columnName, setColumnName] = useState("To do");
+  const [searchValue, setSearchValue] = useState("");
 
   function openModal() {
     setIsOpen(true);
@@ -28,10 +30,19 @@ function App() {
     }
   }
 
+  function onDeleteCard(id: string) {
+    const newTasks = tasks.filter((item) => item.id != id);
+    setTasks(newTasks);
+  }
+
   return (
     <Wrapper>
       <Header>
-        <SearchInput placeholder="Search" />
+        <SearchInput
+          placeholder="Search"
+          value={searchValue}
+          onChange={(e) => setSearchValue(e.target.value)}
+        />
         <PersonalBar>
           <Name>Ilya Babikov</Name>
         </PersonalBar>
@@ -54,14 +65,26 @@ function App() {
             <Plus onClick={openModal} />
           </ColumnHeader>
           <Tasks>
-            {tasks.map((item, index) => (
-              <Card
-                key={index}
-                title={item.title}
-                priority={item.priority}
-                description={item.description}
-              />
-            ))}
+            {tasks
+              .filter(
+                (item) =>
+                  item.title
+                    .toLowerCase()
+                    .includes(searchValue.toLowerCase()) ||
+                  item.priority
+                    .toLowerCase()
+                    .includes(searchValue.toLowerCase())
+              )
+
+              .map((item, index) => (
+                <Card
+                  key={index}
+                  title={item.title}
+                  priority={item.priority}
+                  description={item.description}
+                  onDeleteCard={() => onDeleteCard(item.id)}
+                />
+              ))}
           </Tasks>
         </Column>
         <Column>
@@ -133,7 +156,7 @@ const Main = styled.div`
   display: flex;
   justify-content: space-around;
 
-  @media screen and (max-width: 750px) {
+  @media screen and (max-width: 970px) {
     flex-wrap: wrap;
   }
 `;
@@ -142,12 +165,12 @@ const Column = styled.div`
   background: #f6f6f6;
   border-radius: 12px;
   min-height: 60vh;
-  max-width: 230px;
+  max-width: 300px;
   width: 100%;
   display: flex;
   flex-direction: column;
 
-  @media screen and (max-width: 750px) {
+  @media screen and (max-width: 970px) {
     margin: 25px 15px;
   }
 `;

@@ -2,6 +2,7 @@ import React, { FC, useState } from "react";
 import styled from "styled-components";
 import Modal from "react-modal";
 import { buttons, Cards, cards } from "../../utils/mock";
+import { v4 as uuidv4 } from "uuid";
 
 interface ModalWindowProps {
   closeModal: () => void;
@@ -34,6 +35,7 @@ export const ModalWindow: FC<ModalWindowProps> = ({
       title: titleValue,
       priority: priorityText,
       description: descriptionValue,
+      id: uuidv4(),
     };
 
     closeModal();

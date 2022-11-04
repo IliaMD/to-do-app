@@ -1,18 +1,26 @@
 import React, { FC } from "react";
 import styled from "styled-components";
+import { GrClose } from "react-icons/gr";
 
 interface CardProps {
   title: string;
   priority: string;
   description: string;
+  onDeleteCard: () => void;
 }
 
-export const Card: FC<CardProps> = ({ title, priority, description }) => {
+export const Card: FC<CardProps> = ({
+  title,
+  priority,
+  description,
+  onDeleteCard,
+}) => {
   return (
     <Root>
       <TaskHeader>
         <TaskTitle>{title}</TaskTitle>
         <Priority $variant={themes[`${priority}`]}>{priority}</Priority>
+        <CardDelete onClick={onDeleteCard} />
       </TaskHeader>
       <TaskDescription>{description}</TaskDescription>
     </Root>
@@ -30,12 +38,17 @@ const TaskHeader = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 10px;
+  justify-content: space-between;
 `;
 
 const TaskTitle = styled.h3`
   margin-right: 10px;
   font-weight: 500;
   font-size: 15px;
+`;
+
+const CardDelete = styled(GrClose)`
+  cursor: pointer;
 `;
 
 const Priority = styled.p<{
