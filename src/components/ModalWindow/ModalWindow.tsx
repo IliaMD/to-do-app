@@ -41,6 +41,8 @@ export const ModalWindow: FC<ModalWindowProps> = ({
     closeModal();
     setOnPriorityAdd([...onPriorityAdd, card]);
     setTasks([...onPriorityAdd, card]);
+    setTitleValue("");
+    setDescriptionValue("");
   }
 
   Modal.setAppElement("#root");
