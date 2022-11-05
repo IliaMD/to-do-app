@@ -5,16 +5,21 @@ import { columns, ColumnsType } from "./utils/mock";
 import logo from "./assets/img/logo.png";
 import "./assets/styles/fonts.css";
 import { FcAddColumn } from "react-icons/fc";
+import { v4 as uuidv4 } from "uuid";
 
 function App() {
   const [searchValue, setSearchValue] = useState("");
   const [newColumns, setNewColumns] = useState(columns);
 
   function handleCreateColumn() {
-    setNewColumns([
-      ...newColumns,
-      { name: "New", columnId: newColumns.length + 1 },
-    ]);
+    setNewColumns([...newColumns, { name: "New", columnId: uuidv4() }]);
+  }
+
+  function handleDeleteColumn(columnId: string) {
+    const filteredColumns = newColumns.filter(
+      (item) => item.columnId !== columnId
+    );
+    setNewColumns(filteredColumns);
   }
 
   return (
@@ -48,14 +53,13 @@ function App() {
           />
         </MainContent>
         <Columns>
-          {newColumns.map((item, index) => (
+          {newColumns.map((item) => (
             <Column
               searchValue={searchValue}
-              key={index}
+              key={item.columnId}
               name={item.name}
               columnId={item.columnId}
-              changeColumns={() => setNewColumns(newColumns)}
-              allColumns={newColumns}
+              onDeleteColumn={handleDeleteColumn}
             />
           ))}
         </Columns>

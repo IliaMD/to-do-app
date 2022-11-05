@@ -9,17 +9,15 @@ import { v4 as uuidv4 } from "uuid";
 interface ColumnProps {
   searchValue: string;
   name: string;
-  columnId: number;
-  changeColumns: (columns: ColumnsType[]) => void;
-  allColumns: ColumnsType[];
+  columnId: string;
+  onDeleteColumn: (columnId: string) => void;
 }
 
 export const Column: FC<ColumnProps> = ({
   searchValue,
   name,
   columnId,
-  changeColumns,
-  allColumns,
+  onDeleteColumn,
 }) => {
   const [columnNameChange, setColumnNameChange] = useState(false);
   const [columnName, setColumnName] = useState(name.toUpperCase());
@@ -37,18 +35,8 @@ export const Column: FC<ColumnProps> = ({
       description: descriptionValue,
       id: uuidv4(),
     };
-
     closeModal();
-
     setTasks((prev) => [...prev, card]);
-  }
-
-  function handleDeleteColumn(columnId: number) {
-    const filteredColumns = allColumns.filter(
-      (item) => item.columnId !== columnId
-    );
-    console.log(filteredColumns);
-    changeColumns([...filteredColumns]);
   }
 
   function closeModal() {
@@ -98,9 +86,9 @@ export const Column: FC<ColumnProps> = ({
               item.priority.toLowerCase().includes(searchValue.toLowerCase())
           )
 
-          .map((item, index) => (
+          .map((item) => (
             <Card
-              key={index}
+              key={item.id}
               title={item.title}
               priority={item.priority}
               description={item.description}
@@ -109,7 +97,7 @@ export const Column: FC<ColumnProps> = ({
           ))}
       </Tasks>
       <ColumnDelBlock>
-        <ColumnDelete onClick={() => handleDeleteColumn(columnId)} />
+        <ColumnDelete onClick={() => onDeleteColumn(columnId)} />
       </ColumnDelBlock>
       <ModalWindow
         modalIsOpen={modalIsOpen}
