@@ -1,19 +1,22 @@
 import React, { FC, useState } from "react";
 import styled from "styled-components";
 import Modal from "react-modal";
-import { buttons, Cards, cards } from "../../utils/mock";
-import { v4 as uuidv4 } from "uuid";
+import { buttons, CardsType, cards } from "../../utils/mock";
 
 interface ModalWindowProps {
   closeModal: () => void;
   modalIsOpen: boolean;
-  setTasks: (card: Cards[]) => void;
+  onAddNewTask: (
+    priorityText: string,
+    titleValue: string,
+    descriptionValue: string
+  ) => void;
 }
 
 export const ModalWindow: FC<ModalWindowProps> = ({
   closeModal,
   modalIsOpen,
-  setTasks,
+  onAddNewTask,
 }) => {
   const customStyles = {
     content: {
@@ -28,19 +31,9 @@ export const ModalWindow: FC<ModalWindowProps> = ({
 
   const [titleValue, setTitleValue] = useState("");
   const [descriptionValue, setDescriptionValue] = useState("");
-  const [onPriorityAdd, setOnPriorityAdd] = useState(cards);
 
   function onPriorityClick(priorityText: string) {
-    let card = {
-      title: titleValue,
-      priority: priorityText,
-      description: descriptionValue,
-      id: uuidv4(),
-    };
-
-    closeModal();
-    setOnPriorityAdd([...onPriorityAdd, card]);
-    setTasks([...onPriorityAdd, card]);
+    onAddNewTask(priorityText, titleValue, descriptionValue);
     setTitleValue("");
     setDescriptionValue("");
   }

@@ -1,22 +1,16 @@
-export type Cards = {
+export type CardsType = {
   title: string;
   description: string;
   priority: string;
   id: string;
 };
 
-export type Columns = {
+export type ColumnsType = {
   name: string;
+  columnId: number;
 };
 
-export const cards: Cards[] = [
-  {
-    title: "помыть посуду",
-    priority: "high",
-    description: "мама мне оторвет голову, если не помою посуду",
-    id: "0",
-  },
-];
+export const cards: CardsType[] = [];
 
 export const buttons = [
   { text: "high", themes: "high" },
@@ -24,8 +18,8 @@ export const buttons = [
   { text: "low", themes: "low" },
 ];
 
-export const columns: Columns[] = [
-  { name: "To do" },
-  { name: "Completed" },
-  { name: "Frozen" },
+export const columns: ColumnsType[] = [
+  { name: "To do", columnId: 1 },
+  { name: "Completed", columnId: 2 },
+  { name: "Frozen", columnId: 3 },
 ];

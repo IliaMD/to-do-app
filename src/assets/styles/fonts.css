@@ -1,0 +1,35 @@
+@font-face {
+  font-family: "NotoNastaliqUrdu";
+  font-display: swap;
+  font-style: normal;
+  font-weight: 600;
+  src: local("NotoNastaliqUrdu-SemiBold"),
+    url("../fonts/Noto_Nastaliq_Urdu/static/NotoNastaliqUrdu-SemiBold.ttf");
+}
+
+@font-face {
+  font-family: "NotoNastaliqUrdu";
+  font-display: swap;
+  font-style: normal;
+  font-weight: 700;
+  src: local("NotoNastaliqUrdu-Bold"),
+    url("../fonts/Noto_Nastaliq_Urdu/static/NotoNastaliqUrdu-Bold.ttf");
+}
+
+@font-face {
+  font-family: "NotoNastaliqUrdu";
+  font-display: swap;
+  font-style: normal;
+  font-weight: 500;
+  src: local("NotoNastaliqUrdu-Medium"),
+    url("../fonts/Noto_Nastaliq_Urdu/static/NotoNastaliqUrdu-Medium.ttf");
+}
+
+@font-face {
+  font-family: "NotoNastaliqUrdu";
+  font-display: swap;
+  font-style: normal;
+  font-weight: 400;
+  src: local("NotoNastaliqUrdu-Regular"),
+    url("../fonts/Noto_Nastaliq_Urdu/static/NotoNastaliqUrdu-Regular.ttf");
+}
