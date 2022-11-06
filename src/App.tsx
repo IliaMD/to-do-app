@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { Column } from "./components";
+import { Column, Form } from "./components";
 import { columns, ColumnsType } from "./utils/mock";
 import logo from "./assets/img/logo.png";
 import "./assets/styles/fonts.css";
@@ -24,6 +24,7 @@ function App() {
 
   return (
     <Wrapper>
+      <Form />
       <Header>
         <HeaderContent>
           <Logo src={logo} />
@@ -85,11 +86,15 @@ const Header = styled.div`
 const SearchInput = styled.input`
   max-width: 500px;
   width: 100%;
-  border: 0.7px solid #ebebeb;
+  border: 1px solid #d6d9de;
   border-radius: 10px;
   padding: 5px 15px;
   margin: 10px 15px;
   height: 30px;
+
+  &:hover {
+    border-color: #adb3bd;
+  }
 
   ::placeholder {
     padding: 15px;
@@ -196,6 +201,7 @@ const CreateColumn = styled(FcAddColumn)`
   width: 25px;
   height: 25px;
   cursor: pointer;
+  color: #9aa0e2;
 `;
 
 const Columns = styled.div`

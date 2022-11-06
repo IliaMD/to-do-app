@@ -196,7 +196,7 @@ const ColumnNameInput = styled.input``;
 const Plus = styled(BsPlusCircle)`
   background-color: #9aa0e2;
   border: none;
-  border-radius: 10px;
+  border-radius: 13px;
   color: white;
   cursor: pointer;
   width: 25px;
