@@ -7,6 +7,7 @@ interface CardProps {
   priority: string;
   description: string;
   onDeleteCard: () => void;
+  onChangeCard: () => void;
 }
 
 export const Card: FC<CardProps> = ({
@@ -14,15 +15,18 @@ export const Card: FC<CardProps> = ({
   priority,
   description,
   onDeleteCard,
+  onChangeCard,
 }) => {
   return (
     <Root>
-      <TaskHeader>
-        <TaskTitle>{title}</TaskTitle>
-        <Priority $variant={themes[`${priority}`]}>{priority}</Priority>
-        <CardDelete onClick={onDeleteCard} />
+      <TaskHeader onClick={onChangeCard}>
+        <TaskContent>
+          <TaskTitle>{title}</TaskTitle>
+          <Priority $variant={themes[`${priority}`]}>{priority}</Priority>
+        </TaskContent>
+        <TaskDescription>{description}</TaskDescription>
       </TaskHeader>
-      <TaskDescription>{description}</TaskDescription>
+      <CardDelete onClick={onDeleteCard} />
     </Root>
   );
 };
@@ -32,19 +36,26 @@ const Root = styled.div`
   padding: 20px 20px;
   border-radius: 12px;
   margin-bottom: 15px;
+  display: flex;
+  justify-content: space-between;
 `;
 
 const TaskHeader = styled.div`
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  cursor: pointer;
+  flex: 1;
+`;
+
+const TaskContent = styled.div`
+  display: flex;
   margin-bottom: 10px;
-  justify-content: space-between;
 `;
 
 const TaskTitle = styled.h3`
-  margin-right: 10px;
   font-weight: 500;
-  font-size: 15px;
+  font-size: 16px;
+  margin-right: 10px;
 `;
 
 const CardDelete = styled(GrClose)`
@@ -73,4 +84,7 @@ const themes: { [key: string]: () => string } = {
   `,
 };
 
-const TaskDescription = styled.p``;
+const TaskDescription = styled.p`
+  font-weight: 400;
+  font-size: 15px;
+`;

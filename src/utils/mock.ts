@@ -3,6 +3,7 @@ export type CardsType = {
   description: string;
   priority: string;
   id: string;
+  columnId: string;
 };
 
 export type ColumnsType = {

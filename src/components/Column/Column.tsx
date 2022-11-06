@@ -2,7 +2,7 @@ import React, { FC, useState } from "react";
 import styled from "styled-components";
 import { BsPlusCircle, BsTrash } from "react-icons/bs";
 import { Card } from "../Card";
-import { cards, ColumnsType } from "../../utils/mock";
+import { cards, CardsType, ColumnsType } from "../../utils/mock";
 import { ModalWindow } from "../ModalWindow";
 import { v4 as uuidv4 } from "uuid";
 
@@ -23,24 +23,65 @@ export const Column: FC<ColumnProps> = ({
   const [columnName, setColumnName] = useState(name.toUpperCase());
   const [tasks, setTasks] = useState(cards);
   const [modalIsOpen, setIsOpen] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [taskId, setTaskId] = useState("");
+  const [titleValue, setTitleValue] = useState("");
+  const [descriptionValue, setDescriptionValue] = useState("");
+
+  function handleTitleValue(e: any) {
+    setTitleValue(e.target.value);
+  }
+
+  function handleDescriptionValue(e: any) {
+    setDescriptionValue(e.target.value);
+  }
+
+  function handleChangeCard(id: string) {
+    setIsOpen(true);
+    setIsEditMode(true);
+    setTaskId(id);
+
+    const task = tasks.find((item) => item.id === id);
+
+    if (task) {
+      setTitleValue(task?.title);
+      setDescriptionValue(task?.description);
+    }
+  }
 
   function handleAddTask(
     priorityText: string,
     titleValue: string,
-    descriptionValue: string
+    descriptionValue: string,
+    id: string
   ) {
-    let card = {
-      title: titleValue,
-      priority: priorityText,
-      description: descriptionValue,
-      id: uuidv4(),
-    };
-    closeModal();
-    setTasks((prev) => [...prev, card]);
+    setTitleValue("");
+    setDescriptionValue("");
+    if (!isEditMode) {
+      let card = {
+        title: titleValue,
+        priority: priorityText,
+        description: descriptionValue,
+        id: uuidv4(),
+        columnId: columnId,
+      };
+      closeModal();
+      setTasks((prev) => [...prev, card]);
+    } else {
+      const editableCard = tasks.find((item) => item.id === id);
+
+      if (editableCard) {
+        editableCard.title = titleValue;
+        editableCard.description = descriptionValue;
+        editableCard.priority = priorityText;
+        closeModal();
+      }
+    }
   }
 
   function closeModal() {
     setIsOpen(false);
+    setIsEditMode(false);
   }
 
   function onEnterName(e: React.KeyboardEvent<HTMLInputElement>) {
@@ -93,6 +134,7 @@ export const Column: FC<ColumnProps> = ({
               priority={item.priority}
               description={item.description}
               onDeleteCard={() => onDeleteCard(item.id)}
+              onChangeCard={() => handleChangeCard(item.id)}
             />
           ))}
       </Tasks>
@@ -103,6 +145,11 @@ export const Column: FC<ColumnProps> = ({
         modalIsOpen={modalIsOpen}
         closeModal={closeModal}
         onAddNewTask={handleAddTask}
+        taskId={taskId}
+        onDescriptionValue={descriptionValue}
+        onTitleValue={titleValue}
+        onHandleDescriptionValue={handleDescriptionValue}
+        onHandleTitleValue={handleTitleValue}
       />
     </Root>
   );
@@ -113,6 +160,7 @@ const ColumnDelete = styled(BsTrash)`
   height: 20px;
   cursor: pointer;
   display: none;
+  color: #a463c4;
 `;
 
 const Root = styled.div`
@@ -146,7 +194,7 @@ const ColumnName = styled.h3`
 const ColumnNameInput = styled.input``;
 
 const Plus = styled(BsPlusCircle)`
-  background-color: #67cb65;
+  background-color: #9aa0e2;
   border: none;
   border-radius: 10px;
   color: white;

@@ -9,14 +9,25 @@ interface ModalWindowProps {
   onAddNewTask: (
     priorityText: string,
     titleValue: string,
-    descriptionValue: string
+    descriptionValue: string,
+    taskId: string
   ) => void;
+  taskId: string;
+  onTitleValue: string;
+  onDescriptionValue: string;
+  onHandleTitleValue: (e: any) => void;
+  onHandleDescriptionValue: (e: any) => void;
 }
 
 export const ModalWindow: FC<ModalWindowProps> = ({
   closeModal,
   modalIsOpen,
   onAddNewTask,
+  taskId,
+  onTitleValue,
+  onDescriptionValue,
+  onHandleTitleValue,
+  onHandleDescriptionValue,
 }) => {
   const customStyles = {
     content: {
@@ -29,13 +40,8 @@ export const ModalWindow: FC<ModalWindowProps> = ({
     },
   };
 
-  const [titleValue, setTitleValue] = useState("");
-  const [descriptionValue, setDescriptionValue] = useState("");
-
   function onPriorityClick(priorityText: string) {
-    onAddNewTask(priorityText, titleValue, descriptionValue);
-    setTitleValue("");
-    setDescriptionValue("");
+    onAddNewTask(priorityText, onTitleValue, onDescriptionValue, taskId);
   }
 
   Modal.setAppElement("#root");
@@ -50,13 +56,13 @@ export const ModalWindow: FC<ModalWindowProps> = ({
       <ModalForm>
         <ModalInput
           placeholder="Add a task"
-          value={titleValue}
-          onChange={(e) => setTitleValue(e.target.value)}
+          value={onTitleValue}
+          onChange={onHandleTitleValue}
         />
         <ModalText
           placeholder="Add a description"
-          value={descriptionValue}
-          onChange={(e) => setDescriptionValue(e.target.value)}
+          value={onDescriptionValue}
+          onChange={onHandleDescriptionValue}
         />
         <ModalPriorityTitle>Choose a priority:</ModalPriorityTitle>
         <ModalPriority>
