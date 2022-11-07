@@ -11,6 +11,14 @@ function App() {
   const [searchValue, setSearchValue] = useState("");
   const [newColumns, setNewColumns] = useState(columns);
 
+  const getLogin = localStorage.getItem("login");
+  const getPassword = localStorage.getItem("password");
+
+  function handleClearStorage() {
+    localStorage.clear();
+    window.location.reload();
+  }
+
   function handleCreateColumn() {
     setNewColumns([...newColumns, { name: "New", columnId: uuidv4() }]);
   }
@@ -24,47 +32,53 @@ function App() {
 
   return (
     <Wrapper>
-      <Form />
-      <Header>
-        <HeaderContent>
-          <Logo src={logo} />
-          <HeaderText>
-            <HeaderTitle>Universe</HeaderTitle>
-            <HeaderSlogan>Your working space in your universe</HeaderSlogan>
-          </HeaderText>
-        </HeaderContent>
-        <PersonalBar>
-          <Name>Ilya Babikov</Name>
-        </PersonalBar>
-      </Header>
+      {getLogin && getPassword ? (
+        <Content>
+          <Header>
+            <HeaderContent>
+              <Logo src={logo} />
+              <HeaderText>
+                <HeaderTitle>Universe</HeaderTitle>
+                <HeaderSlogan>Your working space in your universe</HeaderSlogan>
+              </HeaderText>
+            </HeaderContent>
+            <PersonalBar>
+              <Name>{getLogin}</Name>
+              <button onClick={handleClearStorage}>logout</button>
+            </PersonalBar>
+          </Header>
 
-      <Main>
-        <MainContent>
-          <MainCreateBlock>
-            <MainTitle>Here you can manage your tasks</MainTitle>
-            <CreateColumnBlock>
-              <MainText>Сreate a column</MainText>
-              <CreateColumn onClick={handleCreateColumn} />
-            </CreateColumnBlock>
-          </MainCreateBlock>
-          <SearchInput
-            placeholder="Search"
-            value={searchValue}
-            onChange={(e) => setSearchValue(e.target.value)}
-          />
-        </MainContent>
-        <Columns>
-          {newColumns.map((item) => (
-            <Column
-              searchValue={searchValue}
-              key={item.columnId}
-              name={item.name}
-              columnId={item.columnId}
-              onDeleteColumn={handleDeleteColumn}
-            />
-          ))}
-        </Columns>
-      </Main>
+          <Main>
+            <MainContent>
+              <MainCreateBlock>
+                <MainTitle>Here you can manage your tasks</MainTitle>
+                <CreateColumnBlock>
+                  <MainText>Сreate a column</MainText>
+                  <CreateColumn onClick={handleCreateColumn} />
+                </CreateColumnBlock>
+              </MainCreateBlock>
+              <SearchInput
+                placeholder="Search"
+                value={searchValue}
+                onChange={(e) => setSearchValue(e.target.value)}
+              />
+            </MainContent>
+            <Columns>
+              {newColumns.map((item) => (
+                <Column
+                  searchValue={searchValue}
+                  key={item.columnId}
+                  name={item.name}
+                  columnId={item.columnId}
+                  onDeleteColumn={handleDeleteColumn}
+                />
+              ))}
+            </Columns>
+          </Main>
+        </Content>
+      ) : (
+        <Form />
+      )}
     </Wrapper>
   );
 }
@@ -74,6 +88,8 @@ const Wrapper = styled.div`
   margin: auto;
   font-family: "Noto Nastaliq Urdu";
 `;
+
+const Content = styled.div``;
 
 const Header = styled.div`
   display: flex;
@@ -144,8 +160,6 @@ const HeaderSlogan = styled.p`
 const PersonalBar = styled.div``;
 
 const Name = styled.h2`
-  cursor: pointer;
-
   @media screen and (max-width: 800px) {
     max-width: 100px;
     width: 100%;

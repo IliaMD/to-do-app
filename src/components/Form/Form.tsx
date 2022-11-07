@@ -1,32 +1,70 @@
 import styled from "styled-components";
 import { ImWarning } from "react-icons/im";
+import React, { useState } from "react";
 
 export const Form = () => {
+  const [loginValue, setLoginValue] = useState("");
+  const [passValue, setPassValue] = useState("");
+  const [changeBorder, setChangeBorder] = useState("validInput");
+  const [addInvalidMsgPass, setAddInvalidMsgPass] = useState("validMsgPass");
+  const [addInvalidMsgLogin, setInvalidMsgLogin] = useState("validMsgLogin");
+
+  function handleSubmit(e: any) {
+    e.preventDefault();
+    if (loginValue.trim().length === 0 && passValue.trim().length < 8) {
+      setChangeBorder("invalidInput");
+      setAddInvalidMsgPass("invalidMsgPass");
+      setInvalidMsgLogin("invalidMsgLogin");
+    } else if (loginValue.trim().length === 0) {
+      setInvalidMsgLogin("invalidMsgLogin");
+    } else if (passValue.trim().length < 7) {
+      setChangeBorder("invalidInput");
+      setAddInvalidMsgPass("invalidMsgPass");
+    } else {
+      setChangeBorder("validInput");
+      setAddInvalidMsgPass("validMsgPass");
+      setInvalidMsgLogin("validMsgLogin");
+      setLoginValue("");
+      setPassValue("");
+      localStorage.setItem("login", loginValue);
+      localStorage.setItem("password", passValue);
+      window.location.reload();
+    }
+  }
+
   return (
     <Root>
       <Main>
         <Title>Login</Title>
         <Login>Full Name</Login>
-        <LoginInput />
+        <LoginInput
+          value={loginValue}
+          onChange={(e) => setLoginValue(e.target.value)}
+          $variant={invalidThemes[changeBorder]}
+        />
+        <LoginInvalidBlock $variant={invalidThemes[addInvalidMsgLogin]}>
+          <InvalidImg />
+          <InvalidSpan>Enter your name</InvalidSpan>
+        </LoginInvalidBlock>
         <Password>Password</Password>
         <PasswordInput
           placeholder="Minimum 8 characters"
-          $variant={invalidThemes["validInput"]}
+          $variant={invalidThemes[changeBorder]}
+          value={passValue}
+          onChange={(e) => setPassValue(e.target.value)}
         />
-        <PassInvalidBlock $variant={invalidThemes["validMsg"]}>
-          <PassInvalidImg />
-          <PassInvalidSpan>
-            Password must be 8 characters or longer!
-          </PassInvalidSpan>
+        <PassInvalidBlock $variant={invalidThemes[addInvalidMsgPass]}>
+          <InvalidImg />
+          <InvalidSpan>Password must be 8 characters or longer!</InvalidSpan>
         </PassInvalidBlock>
-        <LoginBtn>Enter in the Universe</LoginBtn>
+        <LoginBtn onClick={handleSubmit}>Enter in the Universe</LoginBtn>
       </Main>
     </Root>
   );
 };
 
 const Root = styled.div`
-  height: 1000px;
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -65,16 +103,16 @@ const Login = styled.label`
   font-size: 12px;
 `;
 
-const LoginInput = styled.input`
+const LoginInput = styled.input<{ $variant: () => string }>`
   border: 1px solid #d6d9de;
   border-radius: 9px;
   padding: 0 20px 0 36px;
   height: 40px;
-  margin-bottom: 20px;
 
   &:hover {
     border-color: #adb3bd;
   }
+  ${({ $variant }) => $variant}
 `;
 
 const Password = styled.label`
@@ -96,6 +134,16 @@ const PasswordInput = styled.input<{ $variant: () => string }>`
   ${({ $variant }) => $variant}
 `;
 
+const LoginInvalidBlock = styled.div<{
+  $variant: () => string;
+}>`
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+
+  ${({ $variant }) => $variant}
+`;
+
 const PassInvalidBlock = styled.div<{
   $variant: () => string;
 }>`
@@ -107,28 +155,38 @@ const PassInvalidBlock = styled.div<{
 `;
 
 const invalidThemes: { [key: string]: () => string } = {
-  invalidMsg: () => `
+  invalidMsgPass: () => `
     visibility: visible;
     `,
-  validMsg: () => `
+  validMsgPass: () => `
     visibility: hidden;
     `,
   invalidInput: () => `
     border-color:#e04f44;
+
+    &:hover {
+      border-color: #e04f44;
+    }
     `,
   validInput: () => `
   border-color: #d6d9de;
     `,
+  invalidMsgLogin: () => `
+    visibility: visible;
+    `,
+  validMsgLogin: () => `
+    visibility: hidden;
+    `,
 };
 
-const PassInvalidImg = styled(ImWarning)`
+const InvalidImg = styled(ImWarning)`
   color: #e04f44;
   margin-right: 5px;
   width: 12px;
   height: 12px;
 `;
 
-const PassInvalidSpan = styled.span`
+const InvalidSpan = styled.span`
   color: #e04f44;
   font-size: 14px;
 `;
