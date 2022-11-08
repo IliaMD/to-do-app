@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { ImWarning } from "react-icons/im";
 import React, { useState } from "react";
+import { useAppDispatch } from "../../store/store";
+import { create } from "../../store/Auth";
 
 export const Form = () => {
   const [loginValue, setLoginValue] = useState("");
@@ -9,9 +11,11 @@ export const Form = () => {
   const [addInvalidMsgPass, setAddInvalidMsgPass] = useState("validMsgPass");
   const [addInvalidMsgLogin, setInvalidMsgLogin] = useState("validMsgLogin");
 
-  function handleSubmit(e: any) {
+  const dispatch = useAppDispatch();
+
+  const handleSubmit = (e: any) => {
     e.preventDefault();
-    if (loginValue.trim().length === 0 && passValue.trim().length < 8) {
+    if (loginValue.trim().length === 0 && passValue.trim().length < 7) {
       setChangeBorder("invalidInput");
       setAddInvalidMsgPass("invalidMsgPass");
       setInvalidMsgLogin("invalidMsgLogin");
@@ -24,13 +28,13 @@ export const Form = () => {
       setChangeBorder("validInput");
       setAddInvalidMsgPass("validMsgPass");
       setInvalidMsgLogin("validMsgLogin");
+
+      dispatch(create({ login: loginValue, password: passValue }));
+
       setLoginValue("");
       setPassValue("");
-      localStorage.setItem("login", loginValue);
-      localStorage.setItem("password", passValue);
-      window.location.reload();
     }
-  }
+  };
 
   return (
     <Root>
