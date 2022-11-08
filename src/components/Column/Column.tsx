@@ -82,6 +82,8 @@ export const Column: FC<ColumnProps> = ({
   function closeModal() {
     setIsOpen(false);
     setIsEditMode(false);
+    setTitleValue("");
+    setDescriptionValue("");
   }
 
   function onEnterName(e: React.KeyboardEvent<HTMLInputElement>) {
