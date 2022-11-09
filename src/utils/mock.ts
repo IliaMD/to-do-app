@@ -1,4 +1,6 @@
-export type CardsType = {
+import { v4 as uuidv4 } from "uuid";
+
+export type CardType = {
   title: string;
   description: string;
   priority: string;
@@ -6,12 +8,20 @@ export type CardsType = {
   columnId: string;
 };
 
+export const cardsDefault: Record<string, CardType> = {
+  "0": {
+    title: "",
+    description: "",
+    priority: "",
+    id: uuidv4(),
+    columnId: uuidv4(),
+  },
+};
+
 export type ColumnsType = {
   name: string;
   columnId: string;
 };
-
-export const cards: CardsType[] = [];
 
 export const buttons = [
   { text: "high", themes: "high" },

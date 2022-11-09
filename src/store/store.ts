@@ -12,9 +12,11 @@ import {
   REGISTER,
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
+import { cardReducer } from "./Cards";
 
 const rootReducer = combineReducers({
   user: userReducer,
+  card: cardReducer,
 });
 
 const persistConfig = {

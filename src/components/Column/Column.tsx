@@ -1,10 +1,11 @@
-import React, { FC, useState } from "react";
+import React, { FC, useState, useMemo } from "react";
 import styled from "styled-components";
 import { BsPlusCircle, BsTrash } from "react-icons/bs";
 import { Card } from "../Card";
-import { cards, CardsType, ColumnsType } from "../../utils/mock";
 import { ModalWindow } from "../ModalWindow";
 import { v4 as uuidv4 } from "uuid";
+import { RootState, useAppDispatch, useAppSelector } from "../../store/store";
+import { createNewCard, deleteCard, changeCard } from "../../store/Cards";
 
 interface ColumnProps {
   searchValue: string;
@@ -21,12 +22,14 @@ export const Column: FC<ColumnProps> = ({
 }) => {
   const [columnNameChange, setColumnNameChange] = useState(false);
   const [columnName, setColumnName] = useState(name.toUpperCase());
-  const [tasks, setTasks] = useState(cards);
   const [modalIsOpen, setIsOpen] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
-  const [taskId, setTaskId] = useState("");
+  const [cardId, setCardId] = useState("");
   const [titleValue, setTitleValue] = useState("");
   const [descriptionValue, setDescriptionValue] = useState("");
+
+  const cards = useAppSelector((state: RootState) => state.card);
+  const dispatch = useAppDispatch();
 
   function handleTitleValue(e: any) {
     setTitleValue(e.target.value);
@@ -39,43 +42,40 @@ export const Column: FC<ColumnProps> = ({
   function handleChangeCard(id: string) {
     setIsOpen(true);
     setIsEditMode(true);
-    setTaskId(id);
-
-    const task = tasks.find((item) => item.id === id);
-
-    if (task) {
-      setTitleValue(task?.title);
-      setDescriptionValue(task?.description);
-    }
+    setCardId(id);
+    setTitleValue(cards[id].title);
+    setDescriptionValue(cards[id].description);
   }
 
   function handleAddTask(
     priorityText: string,
     titleValue: string,
     descriptionValue: string,
-    id: string
+    cardId: string
   ) {
     setTitleValue("");
     setDescriptionValue("");
     if (!isEditMode) {
-      let card = {
-        title: titleValue,
-        priority: priorityText,
-        description: descriptionValue,
-        id: uuidv4(),
-        columnId: columnId,
-      };
       closeModal();
-      setTasks((prev) => [...prev, card]);
+      dispatch(
+        createNewCard({
+          title: titleValue,
+          priority: priorityText,
+          description: descriptionValue,
+          columnId: columnId,
+          id: uuidv4(),
+        })
+      );
     } else {
-      const editableCard = tasks.find((item) => item.id === id);
-
-      if (editableCard) {
-        editableCard.title = titleValue;
-        editableCard.description = descriptionValue;
-        editableCard.priority = priorityText;
-        closeModal();
-      }
+      dispatch(
+        changeCard({
+          id: cardId,
+          title: titleValue,
+          description: descriptionValue,
+          priority: priorityText,
+        })
+      );
+      closeModal();
     }
   }
 
@@ -101,9 +101,13 @@ export const Column: FC<ColumnProps> = ({
   }
 
   function onDeleteCard(id: string) {
-    const newTasks = tasks.filter((item) => item.id !== id);
-    setTasks(newTasks);
+    dispatch(deleteCard(cards[id]));
   }
+
+  const filteredCards = useMemo(
+    () => Object.values(cards).filter((card) => card.columnId === columnId),
+    [cards, columnId]
+  );
 
   return (
     <Root>
@@ -122,7 +126,7 @@ export const Column: FC<ColumnProps> = ({
         <Plus onClick={openModal} />
       </ColumnHeader>
       <Tasks>
-        {tasks
+        {filteredCards
           .filter(
             (item) =>
               item.title.toLowerCase().includes(searchValue.toLowerCase()) ||
@@ -147,7 +151,7 @@ export const Column: FC<ColumnProps> = ({
         modalIsOpen={modalIsOpen}
         closeModal={closeModal}
         onAddNewTask={handleAddTask}
-        taskId={taskId}
+        taskId={cardId}
         onDescriptionValue={descriptionValue}
         onTitleValue={titleValue}
         onHandleDescriptionValue={handleDescriptionValue}

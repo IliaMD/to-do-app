@@ -1,7 +1,7 @@
 import React, { FC, useState } from "react";
 import styled from "styled-components";
 import Modal from "react-modal";
-import { buttons, CardsType, cards } from "../../utils/mock";
+import { buttons } from "../../utils/mock";
 
 interface ModalWindowProps {
   closeModal: () => void;

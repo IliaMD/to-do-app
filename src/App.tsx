@@ -6,15 +6,20 @@ import logo from "./assets/img/logo.png";
 import "./assets/styles/fonts.css";
 import { FcAddColumn } from "react-icons/fc";
 import { v4 as uuidv4 } from "uuid";
-import { useAppSelector, RootState } from "./store/store";
+import { useAppSelector, useAppDispatch, RootState } from "./store/store";
+import { change } from "./store/Auth";
 
 function App() {
   const existUser = useAppSelector((state: RootState) => state.user);
-  console.log(existUser);
+
   const [searchValue, setSearchValue] = useState("");
   const [newColumns, setNewColumns] = useState(columns);
 
-  function handleClearStorage() {}
+  const dispatch = useAppDispatch();
+
+  function handleClearUser() {
+    dispatch(change({ login: "", password: "" }));
+  }
 
   function handleCreateColumn() {
     setNewColumns([...newColumns, { name: "New", columnId: uuidv4() }]);
@@ -41,7 +46,7 @@ function App() {
             </HeaderContent>
             <PersonalBar>
               <Name>{existUser.login}</Name>
-              <button onClick={handleClearStorage}>logout</button>
+              <button onClick={handleClearUser}>logout</button>
             </PersonalBar>
           </Header>
 

@@ -1,2 +1,2 @@
-export { create } from "./userSlice";
+export { change } from "./userSlice";
 export { default as userReducer } from "./userSlice";

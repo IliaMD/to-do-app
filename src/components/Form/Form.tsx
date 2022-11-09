@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { ImWarning } from "react-icons/im";
 import React, { useState } from "react";
 import { useAppDispatch } from "../../store/store";
-import { create } from "../../store/Auth";
+import { change } from "../../store/Auth";
 
 export const Form = () => {
   const [loginValue, setLoginValue] = useState("");
@@ -29,7 +29,7 @@ export const Form = () => {
       setAddInvalidMsgPass("validMsgPass");
       setInvalidMsgLogin("validMsgLogin");
 
-      dispatch(create({ login: loginValue, password: passValue }));
+      dispatch(change({ login: loginValue, password: passValue }));
 
       setLoginValue("");
       setPassValue("");
