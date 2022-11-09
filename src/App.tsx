@@ -5,15 +5,15 @@ import { columns, ColumnsType } from "./utils/mock";
 import logo from "./assets/img/logo.png";
 import "./assets/styles/fonts.css";
 import { FcAddColumn } from "react-icons/fc";
-import { v4 as uuidv4 } from "uuid";
 import { useAppSelector, useAppDispatch, RootState } from "./store/store";
 import { change } from "./store/Auth";
+import { createNewColumn, deleteColumn } from "./store/Columns";
 
 function App() {
   const existUser = useAppSelector((state: RootState) => state.user);
+  const columns = useAppSelector((state: RootState) => state.columns);
 
   const [searchValue, setSearchValue] = useState("");
-  const [newColumns, setNewColumns] = useState(columns);
 
   const dispatch = useAppDispatch();
 
@@ -22,14 +22,11 @@ function App() {
   }
 
   function handleCreateColumn() {
-    setNewColumns([...newColumns, { name: "New", columnId: uuidv4() }]);
+    dispatch(createNewColumn());
   }
 
   function handleDeleteColumn(columnId: string) {
-    const filteredColumns = newColumns.filter(
-      (item) => item.columnId !== columnId
-    );
-    setNewColumns(filteredColumns);
+    dispatch(deleteColumn(columnId));
   }
 
   return (
@@ -66,7 +63,7 @@ function App() {
               />
             </MainContent>
             <Columns>
-              {newColumns.map((item) => (
+              {columns.map((item) => (
                 <Column
                   searchValue={searchValue}
                   key={item.columnId}

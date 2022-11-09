@@ -13,10 +13,12 @@ import {
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import { cardReducer } from "./Cards";
+import { columnsReducer } from "./Columns";
 
 const rootReducer = combineReducers({
   user: userReducer,
   card: cardReducer,
+  columns: columnsReducer,
 });
 
 const persistConfig = {

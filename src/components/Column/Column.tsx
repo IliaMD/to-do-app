@@ -6,6 +6,7 @@ import { ModalWindow } from "../ModalWindow";
 import { v4 as uuidv4 } from "uuid";
 import { RootState, useAppDispatch, useAppSelector } from "../../store/store";
 import { createNewCard, deleteCard, changeCard } from "../../store/Cards";
+import { changeName } from "../../store/Columns";
 
 interface ColumnProps {
   searchValue: string;
@@ -21,14 +22,16 @@ export const Column: FC<ColumnProps> = ({
   onDeleteColumn,
 }) => {
   const [columnNameChange, setColumnNameChange] = useState(false);
+
   const [columnName, setColumnName] = useState(name.toUpperCase());
+
   const [modalIsOpen, setIsOpen] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [cardId, setCardId] = useState("");
   const [titleValue, setTitleValue] = useState("");
   const [descriptionValue, setDescriptionValue] = useState("");
-
   const cards = useAppSelector((state: RootState) => state.card);
+
   const dispatch = useAppDispatch();
 
   function handleTitleValue(e: any) {
@@ -53,19 +56,18 @@ export const Column: FC<ColumnProps> = ({
     descriptionValue: string,
     cardId: string
   ) {
-    setTitleValue("");
-    setDescriptionValue("");
     if (!isEditMode) {
-      closeModal();
-      dispatch(
-        createNewCard({
-          title: titleValue,
-          priority: priorityText,
-          description: descriptionValue,
-          columnId: columnId,
-          id: uuidv4(),
-        })
-      );
+      if (titleValue.trim()) {
+        dispatch(
+          createNewCard({
+            title: titleValue,
+            priority: priorityText,
+            description: descriptionValue,
+            columnId: columnId,
+            id: uuidv4(),
+          })
+        );
+      }
     } else {
       dispatch(
         changeCard({
@@ -75,8 +77,8 @@ export const Column: FC<ColumnProps> = ({
           priority: priorityText,
         })
       );
-      closeModal();
     }
+    closeModal();
   }
 
   function closeModal() {
@@ -86,10 +88,16 @@ export const Column: FC<ColumnProps> = ({
     setDescriptionValue("");
   }
 
-  function onEnterName(e: React.KeyboardEvent<HTMLInputElement>) {
+  function onEnterChangeName(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.code === "Enter") {
       setColumnNameChange(false);
+      dispatch(changeName({ name: columnName, columnId: columnId }));
     }
+  }
+
+  function onBlurChangeName() {
+    setColumnNameChange(false);
+    dispatch(changeName({ name: columnName, columnId: columnId }));
   }
 
   function openModal() {
@@ -115,9 +123,9 @@ export const Column: FC<ColumnProps> = ({
         {columnNameChange ? (
           <ColumnNameInput
             value={columnName}
-            onKeyDown={onEnterName}
+            onKeyDown={onEnterChangeName}
             onChange={(e) => setColumnName(e.target.value)}
-            onBlur={() => setColumnNameChange(false)}
+            onBlur={onBlurChangeName}
             autoFocus
           />
         ) : (
@@ -165,7 +173,7 @@ const ColumnDelete = styled(BsTrash)`
   width: 20px;
   height: 20px;
   cursor: pointer;
-  display: none;
+  visibility: hidden;
   color: #a463c4;
 `;
 
@@ -180,7 +188,7 @@ const Root = styled.div`
   margin: 15px 15px;
 
   &:hover ${ColumnDelete} {
-    display: block;
+    visibility: visible;
   }
 `;
 
