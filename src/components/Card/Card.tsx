@@ -38,6 +38,10 @@ const Root = styled.div`
   margin-bottom: 15px;
   display: flex;
   justify-content: space-between;
+
+  @media screen and (max-width: 365px) {
+    padding: 10px 10px;
+  }
 `;
 
 const TaskHeader = styled.div`
@@ -50,12 +54,29 @@ const TaskHeader = styled.div`
 const TaskContent = styled.div`
   display: flex;
   margin-bottom: 10px;
+
+  @media screen and (max-width: 260px) {
+    flex-direction: column;
+  }
 `;
 
 const TaskTitle = styled.h3`
   font-weight: 500;
   font-size: 16px;
   margin-right: 10px;
+  max-width: 170px;
+  width: 100%;
+  text-overflow: ellipsis;
+  word-wrap: break-word;
+
+  @media screen and (max-width: 350px) {
+    max-width: 140px;
+    width: 100%;
+  }
+  @media screen and (max-width: 295px) {
+    max-width: 100px;
+    width: 100%;
+  }
 `;
 
 const CardDelete = styled(GrClose)`
@@ -69,6 +90,14 @@ const Priority = styled.p<{
   padding: 1px 5px;
   border-radius: 10px;
   color: white;
+  height: 14px;
+  display: flex;
+  align-items: center;
+
+  @media screen and (max-width: 260px) {
+    width: 34px;
+  }
+
   ${({ $variant }) => $variant}
 `;
 
@@ -87,4 +116,17 @@ const themes: { [key: string]: () => string } = {
 const TaskDescription = styled.p`
   font-weight: 400;
   font-size: 15px;
+  max-width: 170px;
+  width: 100%;
+  text-overflow: ellipsis;
+  word-wrap: break-word;
+
+  @media screen and (max-width: 350px) {
+    max-width: 140px;
+    width: 100%;
+  }
+  @media screen and (max-width: 295px) {
+    max-width: 100px;
+    width: 100%;
+  }
 `;

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { Column, Form } from "./components";
-import { columns, ColumnsType } from "./utils/mock";
 import logo from "./assets/img/logo.png";
 import "./assets/styles/fonts.css";
 import { FcAddColumn } from "react-icons/fc";
@@ -10,10 +9,10 @@ import { change } from "./store/Auth";
 import { createNewColumn, deleteColumn } from "./store/Columns";
 
 function App() {
+  const [searchValue, setSearchValue] = useState("");
+
   const existUser = useAppSelector((state: RootState) => state.user);
   const columns = useAppSelector((state: RootState) => state.columns);
-
-  const [searchValue, setSearchValue] = useState("");
 
   const dispatch = useAppDispatch();
 
@@ -159,6 +158,12 @@ const HeaderSlogan = styled.p`
 const PersonalBar = styled.div``;
 
 const Name = styled.h2`
+  max-width: 250px;
+  width: 100%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+
   @media screen and (max-width: 800px) {
     max-width: 100px;
     width: 100%;

@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
 import styled from "styled-components";
 import Modal from "react-modal";
 import { buttons } from "../../utils/mock";
@@ -105,6 +105,7 @@ const ModalText = styled.textarea`
   border: 0.7px solid #ebebeb;
   border-radius: 10px;
   padding: 5px 5px;
+  overflow: auto;
 
   ::placeholder {
     font-size: 14px;

@@ -22,25 +22,15 @@ export const Column: FC<ColumnProps> = ({
   onDeleteColumn,
 }) => {
   const [columnNameChange, setColumnNameChange] = useState(false);
-
   const [columnName, setColumnName] = useState(name.toUpperCase());
-
   const [modalIsOpen, setIsOpen] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [cardId, setCardId] = useState("");
   const [titleValue, setTitleValue] = useState("");
   const [descriptionValue, setDescriptionValue] = useState("");
+
   const cards = useAppSelector((state: RootState) => state.card);
-
   const dispatch = useAppDispatch();
-
-  function handleTitleValue(e: any) {
-    setTitleValue(e.target.value);
-  }
-
-  function handleDescriptionValue(e: any) {
-    setDescriptionValue(e.target.value);
-  }
 
   function handleChangeCard(id: string) {
     setIsOpen(true);
@@ -50,7 +40,7 @@ export const Column: FC<ColumnProps> = ({
     setDescriptionValue(cards[id].description);
   }
 
-  function handleAddTask(
+  function handleAddChangeTask(
     priorityText: string,
     titleValue: string,
     descriptionValue: string,
@@ -100,14 +90,6 @@ export const Column: FC<ColumnProps> = ({
     dispatch(changeName({ name: columnName, columnId: columnId }));
   }
 
-  function openModal() {
-    setIsOpen(true);
-  }
-
-  function onColumnName() {
-    setColumnNameChange(true);
-  }
-
   function onDeleteCard(id: string) {
     dispatch(deleteCard(cards[id]));
   }
@@ -129,9 +111,11 @@ export const Column: FC<ColumnProps> = ({
             autoFocus
           />
         ) : (
-          <ColumnName onClick={onColumnName}>{columnName}</ColumnName>
+          <ColumnName onClick={() => setColumnNameChange(true)}>
+            {columnName}
+          </ColumnName>
         )}
-        <Plus onClick={openModal} />
+        <Plus onClick={() => setIsOpen(true)} />
       </ColumnHeader>
       <Tasks>
         {filteredCards
@@ -158,12 +142,14 @@ export const Column: FC<ColumnProps> = ({
       <ModalWindow
         modalIsOpen={modalIsOpen}
         closeModal={closeModal}
-        onAddNewTask={handleAddTask}
+        onAddNewTask={handleAddChangeTask}
         taskId={cardId}
         onDescriptionValue={descriptionValue}
         onTitleValue={titleValue}
-        onHandleDescriptionValue={handleDescriptionValue}
-        onHandleTitleValue={handleTitleValue}
+        onHandleDescriptionValue={(e: any) =>
+          setDescriptionValue(e.target.value)
+        }
+        onHandleTitleValue={(e: any) => setTitleValue(e.target.value)}
       />
     </Root>
   );
@@ -196,13 +182,18 @@ const ColumnHeader = styled.div`
   display: flex;
   justify-content: space-between;
   padding: 15px 15px;
-  align-items: center;
+  align-items: flex-start;
 `;
 
 const ColumnName = styled.h3`
   cursor: pointer;
   font-weight: 700;
   font-size: 20px;
+  text-overflow: ellipsis;
+  word-wrap: break-word;
+  overflow: hidden;
+  max-width: 250px;
+  width: 100%;
 `;
 
 const ColumnNameInput = styled.input``;
