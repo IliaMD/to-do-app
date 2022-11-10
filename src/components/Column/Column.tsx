@@ -5,8 +5,16 @@ import { Card } from "../Card";
 import { ModalWindow } from "../ModalWindow";
 import { v4 as uuidv4 } from "uuid";
 import { RootState, useAppDispatch, useAppSelector } from "../../store/store";
-import { createNewCard, deleteCard, changeCard } from "../../store/Cards";
+import {
+  createNewCard,
+  deleteCard,
+  changeCard,
+  dragCardtoColumn,
+} from "../../store/Cards";
 import { changeName } from "../../store/Columns";
+import { useDrag } from "react-dnd";
+import { CardType } from "../../utils/mock";
+import { useDrop } from "react-dnd";
 
 interface ColumnProps {
   searchValue: string;
@@ -31,6 +39,18 @@ export const Column: FC<ColumnProps> = ({
 
   const cards = useAppSelector((state: RootState) => state.card);
   const dispatch = useAppDispatch();
+
+  const [{ isOver }, drop] = useDrop(() => ({
+    accept: "card",
+
+    collect: (monitor) => ({
+      isOver: !!monitor.isOver(),
+    }),
+
+    drop: (monitor: any) => {
+      dispatch(dragCardtoColumn({ id: monitor.itemID, columnId: columnId }));
+    },
+  }));
 
   function handleChangeCard(id: string) {
     setIsOpen(true);
@@ -100,7 +120,7 @@ export const Column: FC<ColumnProps> = ({
   );
 
   return (
-    <Root>
+    <Root ref={drop}>
       <ColumnHeader>
         {columnNameChange ? (
           <ColumnNameInput
@@ -133,6 +153,7 @@ export const Column: FC<ColumnProps> = ({
               description={item.description}
               onDeleteCard={() => onDeleteCard(item.id)}
               onChangeCard={() => handleChangeCard(item.id)}
+              cardId={item.id}
             />
           ))}
       </Tasks>

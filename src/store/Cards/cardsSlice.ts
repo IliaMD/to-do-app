@@ -44,9 +44,20 @@ export const cardsSlice = createSlice({
       state[id].description = description;
       state[id].priority = priority;
     },
+    dragCardtoColumn: (
+      state,
+      action: PayloadAction<{
+        id: string;
+        columnId: string;
+      }>
+    ) => {
+      const { id, columnId } = action.payload;
+      state[id].columnId = columnId;
+    },
   },
 });
 
-export const { createNewCard, deleteCard, changeCard } = cardsSlice.actions;
+export const { createNewCard, deleteCard, changeCard, dragCardtoColumn } =
+  cardsSlice.actions;
 
 export default cardsSlice.reducer;

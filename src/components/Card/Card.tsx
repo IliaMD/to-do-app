@@ -1,6 +1,7 @@
 import React, { FC } from "react";
 import styled from "styled-components";
 import { GrClose } from "react-icons/gr";
+import { useDrag } from "react-dnd";
 
 interface CardProps {
   title: string;
@@ -8,28 +9,37 @@ interface CardProps {
   description: string;
   onDeleteCard: () => void;
   onChangeCard: () => void;
+  cardId: string;
 }
 
-export const Card: FC<CardProps> = ({
-  title,
-  priority,
-  description,
-  onDeleteCard,
-  onChangeCard,
-}) => {
-  return (
-    <Root>
-      <TaskHeader onClick={onChangeCard}>
-        <TaskContent>
-          <TaskTitle>{title}</TaskTitle>
-          <Priority $variant={themes[`${priority}`]}>{priority}</Priority>
-        </TaskContent>
-        <TaskDescription>{description}</TaskDescription>
-      </TaskHeader>
-      <CardDelete onClick={onDeleteCard} />
-    </Root>
-  );
-};
+export const Card = React.forwardRef<HTMLDivElement, CardProps>(
+  (
+    { title, priority, description, onDeleteCard, onChangeCard, cardId },
+    ref
+  ) => {
+    const [{ isDragging }, drag] = useDrag(() => ({
+      type: "card",
+      item: { itemID: cardId },
+      collect: (monitor) => ({
+        item: monitor.getItem(),
+        isDragging: !!monitor.isDragging(),
+      }),
+    }));
+
+    return (
+      <Root ref={drag}>
+        <TaskHeader onClick={onChangeCard}>
+          <TaskContent>
+            <TaskTitle>{title}</TaskTitle>
+            <Priority $variant={themes[`${priority}`]}>{priority}</Priority>
+          </TaskContent>
+          <TaskDescription>{description}</TaskDescription>
+        </TaskHeader>
+        <CardDelete onClick={onDeleteCard} />
+      </Root>
+    );
+  }
+);
 
 const Root = styled.div`
   background-color: #e0e4ea;

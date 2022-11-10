@@ -7,6 +7,8 @@ import { FcAddColumn } from "react-icons/fc";
 import { useAppSelector, useAppDispatch, RootState } from "./store/store";
 import { change } from "./store/Auth";
 import { createNewColumn, deleteColumn } from "./store/Columns";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 function App() {
   const [searchValue, setSearchValue] = useState("");
@@ -61,17 +63,19 @@ function App() {
                 onChange={(e) => setSearchValue(e.target.value)}
               />
             </MainContent>
-            <Columns>
-              {columns.map((item) => (
-                <Column
-                  searchValue={searchValue}
-                  key={item.columnId}
-                  name={item.name}
-                  columnId={item.columnId}
-                  onDeleteColumn={handleDeleteColumn}
-                />
-              ))}
-            </Columns>
+            <DndProvider backend={HTML5Backend}>
+              <Columns>
+                {columns.map((item) => (
+                  <Column
+                    searchValue={searchValue}
+                    key={item.columnId}
+                    name={item.name}
+                    columnId={item.columnId}
+                    onDeleteColumn={handleDeleteColumn}
+                  />
+                ))}
+              </Columns>
+            </DndProvider>
           </Main>
         </Content>
       ) : (
