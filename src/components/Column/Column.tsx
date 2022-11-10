@@ -12,8 +12,6 @@ import {
   dragCardtoColumn,
 } from "../../store/Cards";
 import { changeName } from "../../store/Columns";
-import { useDrag } from "react-dnd";
-import { CardType } from "../../utils/mock";
 import { useDrop } from "react-dnd";
 
 interface ColumnProps {
@@ -215,6 +213,7 @@ const ColumnName = styled.h3`
   overflow: hidden;
   max-width: 250px;
   width: 100%;
+  line-height: 1;
 `;
 
 const ColumnNameInput = styled.input``;
