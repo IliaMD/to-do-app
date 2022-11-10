@@ -210,7 +210,6 @@ const ColumnName = styled.h3`
   font-size: 20px;
   text-overflow: ellipsis;
   word-wrap: break-word;
-  /*  overflow: hidden; */
   max-width: 250px;
   width: 100%;
   line-height: 1;

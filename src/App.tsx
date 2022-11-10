@@ -164,7 +164,6 @@ const Name = styled.h2`
   width: 100%;
   text-overflow: ellipsis;
   white-space: nowrap;
-  overflow: hidden;
 
   @media screen and (max-width: 800px) {
     max-width: 100px;
