@@ -33,7 +33,7 @@ function App() {
   return (
     <Wrapper>
       {existUser.login && existUser.password ? (
-        <Content>
+        <>
           <Header>
             <HeaderContent>
               <Logo src={logo} />
@@ -77,7 +77,7 @@ function App() {
               </Columns>
             </DndProvider>
           </Main>
-        </Content>
+        </>
       ) : (
         <Form />
       )}
@@ -90,8 +90,6 @@ const Wrapper = styled.div`
   margin: auto;
   font-family: "Noto Nastaliq Urdu";
 `;
-
-const Content = styled.div``;
 
 const Header = styled.div`
   display: flex;

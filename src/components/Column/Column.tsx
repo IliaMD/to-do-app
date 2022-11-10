@@ -210,13 +210,16 @@ const ColumnName = styled.h3`
   font-size: 20px;
   text-overflow: ellipsis;
   word-wrap: break-word;
-  overflow: hidden;
+  /*  overflow: hidden; */
   max-width: 250px;
   width: 100%;
   line-height: 1;
 `;
 
-const ColumnNameInput = styled.input``;
+const ColumnNameInput = styled.input`
+  max-width: 250px;
+  width: 100%;
+`;
 
 const Plus = styled(BsPlusCircle)`
   background-color: #9aa0e2;
