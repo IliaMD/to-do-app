@@ -27,7 +27,13 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
     }));
 
     return (
-      <Root ref={drag}>
+      <Root
+        ref={drag}
+        style={{
+          border: isDragging ? "1px solid #e04f44" : "none",
+          boxShadow: isDragging ? " 0 10px 25px #7b68ee80" : "none",
+        }}
+      >
         <TaskHeader onClick={onChangeCard}>
           <TaskContent>
             <TaskTitle>{title}</TaskTitle>
@@ -54,6 +60,23 @@ const Root = styled.div`
   }
 `;
 
+/* const draggingThemes: { [key: string]: () => string } = {
+  true: () => `
+  background-color: #e0e4ea;
+    `,
+  false: () => `
+  background-color: red;
+    `,
+}; */
+/* const StyledWidget = styled.div`
+  background-color: ${(props) => (props.invisible ? "#afafaf" : "red")};
+  ${(props) => props.invisible && "box-shadow: grey 5px 5px;"};
+`;
+
+const Widget = ({ children, invisible }) => (
+  <StyledWidget invisible={invisible}>{children}</StyledWidget>
+);
+ */
 const TaskHeader = styled.div`
   display: flex;
   flex-direction: column;

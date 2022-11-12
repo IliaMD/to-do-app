@@ -117,8 +117,18 @@ export const Column: FC<ColumnProps> = ({
     [cards, columnId]
   );
 
+  /*  ;
+   */
+  /* 
+7px 11px 34px -6px rgba(0,0,0,1) */
   return (
-    <Root ref={drop}>
+    <Root
+      ref={drop}
+      style={{
+        background: isOver ? "#eee9ef" : "#f6f6f6",
+        boxShadow: isOver ? " 0 10px 25px #7b68ee80" : "none",
+      }}
+    >
       <ColumnHeader>
         {columnNameChange ? (
           <ColumnNameInput
