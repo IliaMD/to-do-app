@@ -7,8 +7,7 @@ import { FcAddColumn } from "react-icons/fc";
 import { useAppSelector, useAppDispatch, RootState } from "./store/store";
 import { change } from "./store/Auth";
 import { createNewColumn, deleteColumn } from "./store/Columns";
-import { DndProvider } from "react-dnd";
-import { MultiBackend } from "react-dnd-multi-backend";
+import { DndProvider } from "react-dnd-multi-backend";
 import { HTML5toTouch } from "rdndmb-html5-to-touch";
 
 function App() {
@@ -64,7 +63,7 @@ function App() {
                 onChange={(e) => setSearchValue(e.target.value)}
               />
             </MainContent>
-            <DndProvider backend={MultiBackend} options={HTML5toTouch}>
+            <DndProvider options={HTML5toTouch}>
               <Columns>
                 {columns.map((item) => (
                   <Column
